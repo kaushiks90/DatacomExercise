@@ -1,4 +1,6 @@
 ﻿using DatacomConsole;
+using DatacomConsole.Models.Appsettings;
+using DatacomConsole.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -42,9 +44,8 @@ namespace DatacomExercise
                           services.AddLogging(configure => configure.AddSerilog());
                       }
 
-                      services.AddConfiguration<EndpointMethodsConfig>(hostingContext.Configuration, "EndpointMethodNamesConfig");
-                      services.AddConfiguration<EndpointUrlConfig>(hostingContext.Configuration, "EndpointUrlConfig");
-                      services.AddConfiguration<UploadImageConfig>(hostingContext.Configuration, "UploadImageConfig");
+                      services.AddConfiguration<ApiEndPoint>(hostingContext.Configuration, "ApiEndPoint");
+                      services.AddConfiguration<AccessToken>(hostingContext.Configuration, "AccessToken");
                   })
                  .UseConsoleLifetime()
                     .Build();
