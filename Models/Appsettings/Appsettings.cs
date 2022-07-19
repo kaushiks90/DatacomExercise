@@ -21,5 +21,6 @@ namespace DatacomConsole.Models.Appsettings
     {
         public string ClientId { get; set; }
         public string SecretKey { get; set; }
+        public string GrantType { get; set; }
     }
 }

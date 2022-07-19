@@ -29,7 +29,7 @@ namespace DatacomExercise
                       services.AddSingleton<IRunService, RunService>();
                       services.AddSingleton<IRestUtility, RestUtility>();
 
-                      services.AddHttpClient("MSPServices", client =>
+                      services.AddHttpClient("DatacomServices", client =>
                       {
                           client.BaseAddress = new Uri(hostingContext.Configuration.GetSection("BaseEndpoint").Value);
                           client.DefaultRequestHeaders.Add("Accept", "application/json");

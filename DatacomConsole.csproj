@@ -26,7 +26,9 @@
 
 
   <ItemGroup>
-    <Folder Include="Models\Models\" />
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

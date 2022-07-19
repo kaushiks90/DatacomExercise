@@ -30,7 +30,7 @@ namespace DatacomConsole
             T responseObject = default(T);
             try
             {
-                var client = _httpClientFactory.CreateClient("MSPServices");
+                var client = _httpClientFactory.CreateClient("DatacomServices");
                 var response = await client.PostAsync(url, (HttpContent)requestContent);
                 var responseJson = await response.Content.ReadAsStringAsync();
                 responseObject = JsonConvert.DeserializeObject<T>(responseJson);
@@ -47,7 +47,7 @@ namespace DatacomConsole
             HttpStatusCode responseStatusCode = HttpStatusCode.NotFound;
             try
             {
-                var client = _httpClientFactory.CreateClient("MSPServices");
+                var client = _httpClientFactory.CreateClient("DatacomServices");
                 var response = await client.GetAsync(url);
                 responseStatusCode = response.StatusCode;
             }
