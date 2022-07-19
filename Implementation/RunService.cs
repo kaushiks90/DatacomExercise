@@ -20,6 +20,7 @@ namespace DatacomConsole
         private readonly ILogger<RunService> _logger;
         private readonly IConfiguration _config;
         private string token;
+        Input inputModel = null;
 
         public RunService(IRestUtility restUtility,
             IConfiguration config,
@@ -32,19 +33,31 @@ namespace DatacomConsole
             _apiEndPointConfig = apiEndPointConfig;
             _accessTokenEndPointConfig = accessTokenEndPointConfig;
             _config = config;
+            inputModel = new Input();
         }
 
         public async Task RunAsync()
         {
-            var res = await GetAccessToken();
-            var res1=await GetCompanyDetail();
+            var accessToken = await GetAccessToken();
+            token = accessToken.AccessToken;
+
+            var getCompanies = await GetCompanyDetail();
+
+
             var res2 = await GetPayRuns();
+
             var res3 = await GetTmeSheets();
         }
 
         public void CollectInput()
         {
-            //ValidateInput
+
+            Console.WriteLine("Enter the CompanyCode");
+            inputModel.CompanyCode = Console.ReadLine();
+            Console.WriteLine("Enter the Pay Period start date- YYYY-MM-DD");
+            inputModel.PayPeriodStartDate = Convert.ToDateTime(Console.ReadLine());
+            Console.WriteLine("Enter the Pay Period end date- YYYY-MM-DD");
+            inputModel.PayPeriodEndDate = Convert.ToDateTime(Console.ReadLine());
         }
 
         public async Task<Token> GetAccessToken()
@@ -57,7 +70,6 @@ namespace DatacomConsole
                     {"client_secret", _accessTokenEndPointConfig.SecretKey},
                 };
             var tokenResponse = await _restUtility.PostRequestAsync<Token>(new FormUrlEncodedContent(form), baseAddress);
-            token = tokenResponse.AccessToken;
             return tokenResponse;
         }
         public async Task<List<Company>> GetCompanyDetail()
