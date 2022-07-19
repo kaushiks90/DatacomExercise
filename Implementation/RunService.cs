@@ -39,6 +39,7 @@ namespace DatacomConsole
             var res = await GetAccessToken();
             var res1=await GetCompanyDetail();
             var res2 = await GetPayRuns();
+            var res3 = await GetTmeSheets();
         }
 
         public void CollectInput()
@@ -73,9 +74,11 @@ namespace DatacomConsole
             return response;
         }
 
-        public void GetTmeSheets()
+        public async Task<List<Timesheet>> GetTmeSheets()
         {
-
+            string url = $"{_config["BaseEndpoint"]}{_apiEndPointConfig.TimesheetsUrl}";
+            var response = await _restUtility.GetAsync<Timesheet>(url, token);
+            return response;
         }
 
         public void CreateCSV()
