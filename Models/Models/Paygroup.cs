@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
 namespace DatacomConsole.Models.Models
 {
-    class Paygroup
+    internal class Paygroup
     {
 
         public string Id { get; set; }

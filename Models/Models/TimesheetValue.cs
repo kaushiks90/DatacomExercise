@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace DatacomConsole.Models.Models
 {
-    class TimesheetValue
+    internal class TimesheetValue
     {
         public string Id { get; set; }
         public string EmployeeId { get; set; }

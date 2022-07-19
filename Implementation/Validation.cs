@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DatacomConsole.Implementation
@@ -51,6 +50,7 @@ namespace DatacomConsole.Implementation
                     }
                 }
             }
+            newpayruns = newpayruns.Where(x => x.PayPeriod.StartDate == input.PayPeriodStartDate && x.PayPeriod.EndDate == input.PayPeriodEndDate).ToList();
             if (newpayruns == null)
             {
                 _logger.LogInformation($"No PayRuns with startDate {input.PayPeriodStartDate} and with endDate {input.PayPeriodEndDate} is found");
@@ -85,12 +85,20 @@ namespace DatacomConsole.Implementation
             List<Output> outputs = new List<Output>();
             foreach (var timesheet in timesheets)
             {
-                double Sum = 0;
-                foreach (var value in timesheet.Values)
+                var timeSheetWithGroupedResult=timesheet.Values.GroupBy(x => x.EmployeeId).ToList();
+                
+                foreach (var value in timeSheetWithGroupedResult)
                 {
-                    Sum += value.Value;
+                    double Sum = 0;
+                    string EmployeeId = "";
+                    foreach (var item in value)
+                    {
+                        Sum += item.Value;
+                        EmployeeId = item.EmployeeId;
+                    }
+                    outputs.Add(new Output() { PayRunId = timesheet.PayRunId,EmployeeId= EmployeeId, StartTime = startTime, SumValue = Sum });
                 }
-                outputs.Add(new Output() { PayRunId = timesheet.PayRunId, StartTime = startTime, SumValue = Sum });
+               
             }
             return outputs;
         }
