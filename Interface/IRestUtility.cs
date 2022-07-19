@@ -17,6 +17,6 @@ namespace DatacomConsole
         /// <returns></returns>
         Task<T> PostRequestAsync<T>(object requestContent, string url);
 
-        Task<HttpStatusCode> GetAsync<T>(string url);
+        Task<List<T>> GetAsync<T>(string url, string token);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -42,21 +44,41 @@ namespace DatacomConsole
             return responseObject;
         }
 
-        public async Task<HttpStatusCode> GetAsync<T>(string url)
+        public async Task<List<T>> GetAsync<T>(string url, string token)
         {
-            HttpStatusCode responseStatusCode = HttpStatusCode.NotFound;
+            List<T> responseObject = default(List<T>);
             try
             {
                 var client = _httpClientFactory.CreateClient("DatacomServices");
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
                 var response = await client.GetAsync(url);
-                responseStatusCode = response.StatusCode;
+                var responseJson = await response.Content.ReadAsStringAsync();
+                responseObject = JsonConvert.DeserializeObject<List<T>>(responseJson);
+                
             }
             catch (Exception ex)
             {
                 //will throw an exception if there is no internet
             }
-            return responseStatusCode;
+            return responseObject;
         }
+
+
+        //        var url = "https://reqbin.com/echo/get/json";
+
+        //        var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+
+        //        httpRequest.Accept = "application/json";
+        //httpRequest.Headers["Authorization"] = "Bearer {token}";
+
+
+        //var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+        //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        //{
+        //   var result = streamReader.ReadToEnd();
+        //}
+
+        //Console.WriteLine(httpResponse.StatusCode);
 
     }
 }

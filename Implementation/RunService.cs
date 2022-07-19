@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace DatacomConsole
         private readonly IRestUtility _restUtility;
         private readonly ILogger<RunService> _logger;
         private readonly IConfiguration _config;
+        private string token;
 
         public RunService(IRestUtility restUtility,
             IConfiguration config,
@@ -35,6 +37,7 @@ namespace DatacomConsole
         public async Task RunAsync()
         {
             var res = await GetAccessToken();
+            var res1=await GetCompanyDetail();
         }
 
         public void CollectInput()
@@ -44,7 +47,6 @@ namespace DatacomConsole
 
         public async Task<Token> GetAccessToken()
         {
-
             string baseAddress = _config["AccessTokenEndpoint"]; ;
             var form = new Dictionary<string, string>
                 {
@@ -53,18 +55,14 @@ namespace DatacomConsole
                     {"client_secret", _accessTokenEndPointConfig.SecretKey},
                 };
             var tokenResponse = await _restUtility.PostRequestAsync<Token>(new FormUrlEncodedContent(form), baseAddress);
+            token = tokenResponse.AccessToken;
             return tokenResponse;
         }
-
-
-
-
-
-
-
-        public void GetCompanyDetail()
+        public async Task<List<Company>> GetCompanyDetail()
         {
-
+            string url = $"{_config["BaseEndpoint"]}{_apiEndPointConfig.CompaniesUrl}";
+            var response = await _restUtility.GetAsync<Company>(url, token);
+            return response;
         }
 
         public void GetPayRuns()
