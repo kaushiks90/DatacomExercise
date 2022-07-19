@@ -15,6 +15,7 @@ namespace DatacomConsole.Models.Appsettings
         public string CompaniesUrl { get; set; }
         public string PayRunsUrl { get; set; }
         public string TimesheetsUrl { get; set; }
+        public string PayGroupsUrl { get; set; }
     }
 
     public class AccessToken

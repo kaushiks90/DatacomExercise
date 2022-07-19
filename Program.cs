@@ -1,4 +1,6 @@
 ﻿using DatacomConsole;
+using DatacomConsole.Implementation;
+using DatacomConsole.Interface;
 using DatacomConsole.Models.Appsettings;
 using DatacomConsole.Utils;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +30,7 @@ namespace DatacomExercise
                   {
                       services.AddSingleton<IRunService, RunService>();
                       services.AddSingleton<IRestUtility, RestUtility>();
+                      services.AddSingleton<IValidation, Validation>();
 
                       services.AddHttpClient("DatacomServices", client =>
                       {

@@ -27,16 +27,37 @@ namespace DatacomConsole.Implementation
             return companyResult;
         }
 
-        public async Task<List<PayRun>> GetPayRuns(Input input, List<PayRun> payruns)
+        public async Task<List<Paygroup>> GetPaygroups(Input input,Company company, List<Paygroup> paygroups)
         {
-            var payRunResult = payruns.Where(payRun => payRun.PayPeriod.StartDate == input.PayPeriodStartDate && payRun.PayPeriod.EndDate == input.PayPeriodEndDate).ToList();
-            if (payRunResult == null)
+            var paygroupResult = paygroups.Where(payGroup => payGroup.CompanyId == company.Id).ToList();
+            if (paygroupResult == null)
+            {
+                _logger.LogInformation($"No Paygroups is found for the company {company.Name}");
+                Console.WriteLine($"No Paygroups with is found for the company {company.Name}");
+            }
+            return paygroupResult;
+        }
+
+        public async Task<List<PayRun>> GetPayRuns(Input input, List<Paygroup> paygroups,List<PayRun> payruns)
+        {
+            List<PayRun> newpayruns = new List<PayRun>();
+            foreach (var payRun in payruns)
+            {
+                foreach (var paygroup in paygroups)
+                {
+                    if (payRun.PayGroupId == paygroup.Id)
+                    {
+                        newpayruns.Add(payRun);
+                    }
+                }
+            }
+            if (newpayruns == null)
             {
                 _logger.LogInformation($"No PayRuns with startDate {input.PayPeriodStartDate} and with endDate {input.PayPeriodEndDate} is found");
                 Console.WriteLine($"No PayRuns with startDate {input.PayPeriodStartDate} and with endDate {input.PayPeriodEndDate} is found");
             }
-            return payRunResult;
-        }
+            return newpayruns;
+        }      
 
         public async Task<List<Timesheet>> GetTimesheets(List<Timesheet> timesheets, List<PayRun> payruns)
         {
@@ -57,6 +78,21 @@ namespace DatacomConsole.Implementation
                 Console.WriteLine($"No timesheets found");
             }
             return newtimesheets;
+        }
+
+        public async Task<List<Output>> GenerateOutputModel(DateTime startTime, List<Timesheet> timesheets)
+        {
+            List<Output> outputs = new List<Output>();
+            foreach (var timesheet in timesheets)
+            {
+                double Sum = 0;
+                foreach (var value in timesheet.Values)
+                {
+                    Sum += value.Value;
+                }
+                outputs.Add(new Output() { PayRunId = timesheet.PayRunId, StartTime = startTime, SumValue = Sum });
+            }
+            return outputs;
         }
     }
 }
