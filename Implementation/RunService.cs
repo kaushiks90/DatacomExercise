@@ -38,6 +38,7 @@ namespace DatacomConsole
         {
             var res = await GetAccessToken();
             var res1=await GetCompanyDetail();
+            var res2 = await GetPayRuns();
         }
 
         public void CollectInput()
@@ -65,9 +66,11 @@ namespace DatacomConsole
             return response;
         }
 
-        public void GetPayRuns()
+        public async Task<List<PayRun>> GetPayRuns()
         {
-
+            string url = $"{_config["BaseEndpoint"]}{_apiEndPointConfig.PayRunsUrl}";
+            var response = await _restUtility.GetAsync<PayRun>(url, token);
+            return response;
         }
 
         public void GetTmeSheets()
