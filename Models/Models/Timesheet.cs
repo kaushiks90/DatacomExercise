@@ -3,7 +3,7 @@
 
 namespace DatacomConsole.Models.Models
 {
-    internal class Timesheet
+    public class Timesheet
     {
         public string Id { get; set; }
         public string Name { get; set; }

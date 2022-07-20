@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DatacomConsole.Implementation
 {
-    class Validation : IValidation
+    public class Validation : IValidation
     {
         private readonly ILogger<Validation> _logger;
         public Validation(ILogger<Validation> logger)
@@ -26,7 +26,7 @@ namespace DatacomConsole.Implementation
             return companyResult;
         }
 
-        public async Task<List<Paygroup>> GetPaygroups(Input input,Company company, List<Paygroup> paygroups)
+        public async Task<List<Paygroup>> GetPaygroups(Company company, List<Paygroup> paygroups)
         {
             var paygroupResult = paygroups.Where(payGroup => payGroup.CompanyId == company.Id).ToList();
             if (paygroupResult == null)

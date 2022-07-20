@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DatacomConsole.Models.Models
 {
-    internal class Input
+    public class Input
     {
         public string CompanyCode { get; set; }
         public DateTime PayPeriodStartDate { get; set; }

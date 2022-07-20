@@ -3,7 +3,7 @@
 
 namespace DatacomConsole.Models.Models
 {
-    internal class Output
+    public class Output
     {
         public int PayRunId { get; set; }
         public string EmployeeId { get; set; }

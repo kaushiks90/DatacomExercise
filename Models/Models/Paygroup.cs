@@ -2,7 +2,7 @@
 
 namespace DatacomConsole.Models.Models
 {
-    internal class Paygroup
+    public class Paygroup
     {
 
         public string Id { get; set; }

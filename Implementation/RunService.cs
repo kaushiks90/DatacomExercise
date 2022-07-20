@@ -57,7 +57,7 @@ namespace DatacomConsole
             var company = await _validation.GetCompany(inputModel, companies);
 
             var paygroups = await GetPayGroupsDetail();
-            var filteredPayGroups = await _validation.GetPaygroups(inputModel, company, paygroups);
+            var filteredPayGroups = await _validation.GetPaygroups(company, paygroups);
 
             var payRuns = await GetPayRuns();
             var filteredpayRuns = await _validation.GetPayRuns(inputModel, filteredPayGroups, payRuns);

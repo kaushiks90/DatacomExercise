@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DatacomConsole.Models.Models
 {
-    internal class Company
+    public class Company
     {
         [JsonProperty("Id")]
         public string Id { get; set; }
